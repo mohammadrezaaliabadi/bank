@@ -1,4 +1,4 @@
-package com.example.bank.web.controller;
+package com.example.bank.web.controller.v2;
 
 import com.example.bank.services.CustomerService;
 import com.example.bank.web.model.Customer;
@@ -10,14 +10,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-@RequestMapping("/api/v1/customer")
+@RequestMapping("/api/v2/customer")
 @RestController
-public class CustomerController {
-
-    @Qualifier("customerService")
+public class CustomerController2 {
+    @Qualifier("customerService2")
     private final CustomerService customerService;
 
-    public CustomerController(CustomerService customerService) {
+    public CustomerController2(CustomerService customerService) {
         this.customerService = customerService;
     }
 
