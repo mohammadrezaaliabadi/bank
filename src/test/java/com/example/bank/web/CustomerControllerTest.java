@@ -84,4 +84,10 @@ public class CustomerControllerTest {
         then(customerService).should().updateCustomer(any(), any());
     }
 
+    @Test
+    public void handleDelete() throws Exception {
+        mockMvc.perform(delete("/api/v1/customer/" + UUID.randomUUID().toString()))
+                .andExpect(status().isNoContent());
+    }
+
 }
