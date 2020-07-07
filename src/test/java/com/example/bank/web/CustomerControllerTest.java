@@ -2,7 +2,7 @@ package com.example.bank.web;
 
 import com.example.bank.services.CustomerService;
 import com.example.bank.web.controller.CustomerController;
-import com.example.bank.web.model.Customer;
+import com.example.bank.web.model.CustomerDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,15 +13,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import static org.mockito.BDDMockito.then;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-
 import java.util.UUID;
 
+import static org.mockito.BDDMockito.then;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @EnableWebMvc
 @WebMvcTest(CustomerController.class)
@@ -35,11 +34,11 @@ public class CustomerControllerTest {
     @Autowired
     ObjectMapper objectmapper;
 
-    Customer validCustomer;
+    CustomerDto validCustomer;
 
     @BeforeEach
     public void setUp() {
-        validCustomer = Customer.builder().id(UUID.randomUUID()).name("Ali").address("Minab").build();
+        validCustomer = CustomerDto.builder().id(UUID.randomUUID()).name("Ali").address("Minab").build();
     }
 
     @Test
@@ -57,9 +56,9 @@ public class CustomerControllerTest {
     @Test
     public void handlerPost() throws Exception {
         //given
-        Customer customer = validCustomer;
+        CustomerDto customer = validCustomer;
         customer.setId(null);
-        Customer saveCustomer = Customer.builder().id(UUID.randomUUID()).name("Reza").address("Bandar").build();
+        CustomerDto saveCustomer = CustomerDto.builder().id(UUID.randomUUID()).name("Reza").address("Bandar").build();
         String customerJson = objectmapper.writeValueAsString(customer);
 
         given(customerService.saveCustomer(any())).willReturn(saveCustomer);
@@ -73,7 +72,7 @@ public class CustomerControllerTest {
 
     @Test
     public void handlerUpdate() throws Exception {
-        Customer customer = validCustomer;
+        CustomerDto customer = validCustomer;
         customer.setId(null);
         String customerJson = objectmapper.writeValueAsString(customer);
         mockMvc.perform(put("/api/v1/customer/" + UUID.randomUUID())

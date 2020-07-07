@@ -1,17 +1,24 @@
 package com.example.bank.web.controller;
 
 import com.example.bank.services.CustomerService;
-import com.example.bank.web.model.Customer;
+import com.example.bank.web.model.CustomerDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
+@Deprecated
 @RequestMapping("/api/v1/customer")
 @RestController
+@Slf4j
+@Validated
 public class CustomerController {
 
     @Qualifier("customerService")
@@ -22,31 +29,30 @@ public class CustomerController {
     }
 
     @GetMapping("/{customerId}")
-    public ResponseEntity<Customer> getCustomer(@PathVariable("customerId") UUID customerId) {
+    public ResponseEntity<CustomerDto> getCustomer(@NotNull @PathVariable("customerId") UUID customerId) {
         return new ResponseEntity<>(customerService.getCustomerById(customerId), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity handlePost(Customer customer) {
-        Customer customer1 = customerService.saveCustomer(customer);
+    public ResponseEntity handlePost(@NotNull @Valid @RequestBody CustomerDto customer) {
+        CustomerDto customer1 = customerService.saveCustomer(customer);
 
         HttpHeaders headers = new HttpHeaders();
         // todo add hostname to url
-        headers.add("Locations", "/api/v1/customer/" + customer1.getId().toString());
-
+        headers.add("Location", "/api/v1/customer/" + customer1.getId().toString());
         return new ResponseEntity(headers, HttpStatus.CREATED);
 
     }
 
     @PutMapping("/{customerId}")
-    public ResponseEntity handleUpdate(@PathVariable("customerId") UUID customerId, @RequestBody Customer customer) {
+    public ResponseEntity handleUpdate(@NotNull @PathVariable("customerId") UUID customerId, @NotNull @Valid @RequestBody CustomerDto customer) {
         customerService.updateCustomer(customerId, customer);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/{customerId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCustomer(@PathVariable("customerId") UUID customerId) {
+    public void deleteCustomer(@NotNull @PathVariable("customerId") UUID customerId) {
         customerService.deleteById(customerId);
     }
 

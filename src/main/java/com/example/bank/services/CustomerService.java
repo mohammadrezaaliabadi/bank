@@ -1,16 +1,16 @@
 package com.example.bank.services;
 
 
-import com.example.bank.web.model.Customer;
+import com.example.bank.web.model.CustomerDto;
 
 import java.util.UUID;
 
 public interface CustomerService {
-    Customer getCustomerById(UUID customerID);
+    CustomerDto getCustomerById(UUID customerID);
 
-    Customer saveCustomer(Customer customer);
+    CustomerDto saveCustomer(CustomerDto customer);
 
-    void updateCustomer(UUID customerId, Customer customer);
+    void updateCustomer(UUID customerId, CustomerDto customer);
 
     void deleteById(UUID customerId);
 }

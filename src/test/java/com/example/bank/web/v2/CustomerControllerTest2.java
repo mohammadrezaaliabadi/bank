@@ -3,7 +3,7 @@ package com.example.bank.web.v2;
 
 import com.example.bank.services.CustomerService;
 import com.example.bank.web.controller.v2.CustomerController2;
-import com.example.bank.web.model.Customer;
+import com.example.bank.web.model.CustomerDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,11 +36,11 @@ public class CustomerControllerTest2 {
     @Autowired
     ObjectMapper objectmapper;
 
-    Customer validCustomer;
+    CustomerDto validCustomer;
 
     @BeforeEach
     public void setUp() {
-        validCustomer = Customer.builder().id(UUID.randomUUID()).name("Ali").address("Minab").build();
+        validCustomer = CustomerDto.builder().id(UUID.randomUUID()).name("Ali").address("Minab").build();
     }
 
     @Test
@@ -58,9 +58,9 @@ public class CustomerControllerTest2 {
     @Test
     public void handlerPost() throws Exception {
         //given
-        Customer customer = validCustomer;
+        CustomerDto customer = validCustomer;
         customer.setId(null);
-        Customer saveCustomer = Customer.builder().id(UUID.randomUUID()).name("Reza").address("Bandar").build();
+        CustomerDto saveCustomer = CustomerDto.builder().id(UUID.randomUUID()).name("Reza").address("Bandar").build();
         String customerJson = objectmapper.writeValueAsString(customer);
 
         given(customerService.saveCustomer(any())).willReturn(saveCustomer);
@@ -74,7 +74,7 @@ public class CustomerControllerTest2 {
 
     @Test
     public void handlerUpdate() throws Exception {
-        Customer customer = validCustomer;
+        CustomerDto customer = validCustomer;
         customer.setId(null);
         String customerJson = objectmapper.writeValueAsString(customer);
         mockMvc.perform(put("/api/v2/customer/" + UUID.randomUUID())

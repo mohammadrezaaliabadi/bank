@@ -1,4 +1,4 @@
-package com.example.bank.web.model.v2;
+package com.example.bank.web.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,19 +6,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Customer2 {
+public class CustomerDto {
     @Null
     private UUID id;
-    @NotBlank
+    @NotNull
     private String name;
-    @NotBlank
+    @NotNull
     private String address;
-    private CustomerType type;
+
+    private OffsetDateTime createDate;
+    private OffsetDateTime lastUpdateDate;
 }
